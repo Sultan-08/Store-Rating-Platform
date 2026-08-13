@@ -49,39 +49,10 @@ Form validations are enforced on both the client-side (for responsive UX) and ba
 
 ---
 
-## 🗄️ Database Schema Design
+## 📷 Store Rating Platform Snapshots :
+<img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/48ba214c-8c77-4266-9161-e181dbbacc02" />
+<img width="1919" height="1090" alt="image" src="https://github.com/user-attachments/assets/f9d01e48-d264-4df5-9f3b-ae93860ecbc2" />
+<img width="1919" height="1033" alt="image" src="https://github.com/user-attachments/assets/bdee2b85-4cf4-4b58-a27c-93017a6b975b" />
+<img width="1919" height="1024" alt="image" src="https://github.com/user-attachments/assets/5a06bdbc-2383-459a-95da-f51d9380d0df" />
 
-The MySQL database schema relies on three core relational tables with foreign key constraints:
 
-```sql
-users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(60) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    address VARCHAR(400) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    role ENUM('Admin', 'NormalUser', 'StoreOwner') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-stores (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(60) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    address VARCHAR(400) NOT NULL,
-    owner_id INT UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE SET NULL
-);
-
-ratings (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    store_id INT NOT NULL,
-    rating TINYINT CHECK (rating BETWEEN 1 AND 5),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_user_store_rating (user_id, store_id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE
-);
